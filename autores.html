@@ -32,7 +32,8 @@
 					method: "get",
 					data : { id: $("#autores").val()	},
 					success : function (miautor) {
-						var fNac = miautor['']
+
+
 						var salida = "<div class='container-fluid'><table class='table'>";
 						salida += "<thead> "+
 								"<tr>" +
@@ -47,88 +48,38 @@
 
 						salida += "<tr>";
 						salida += "<td>" + miautor[0].nombre + "</td>"; // nombre
-						salida += "<td>" + miautor[0].fecha_nacimiento + "</td>"; // fecha nacimiento
-						salida += "<td>" + miautor[0].fecha_defuncion + "</td>"; // fecha defuncion
-						salida += "<td>" + miautor[0].lugar_defuncion + "</td>"; // lugar defuncion
-						salida += "<td>" + miautor[0].lugar_nacimiento + "</td>"; // lugar nacimiento
+						salida += "<td>" + miautor[0].lugar_nacimiento + "</td>"; // fecha nacimiento
+						salida += "<td>" + miautor[0].fecha_nacimiento + "</td>"; // fecha defuncion
+						salida += "<td>" + miautor[0].fecha_defuncion + "</td>"; // lugar defuncion
+						salida += "<td>" + miautor[0].lugar_defuncion + "</td>"; // lugar nacimiento
 						salida += "</tr></table>";
 
 						salida += "<h2>Óperas</h2>";
-						for(i = 0; i < miautor.length; i++){
+						if(miautor[0].nop != 0){
+							for(i = 0; i < miautor.length; i++){
 
+								salida += "<div class='panel panel-primary'>";
+								salida += "<div class='panel-heading'><p class='panel-title'>" + miautor[i].opn + "</p></div>";
+								salida += "<div class='panel-body'><h4 class='sinop' class='panel-title'>Sinopsis</h4>"
+								salida += "<p>" + miautor[i].osin + "</p></div>"
+								salida += "</div>";
+							}
+						}
+						else {
 							salida += "<div class='panel panel-primary'>";
-							salida += "<div class='panel-heading'><p class='panel-title'>" + miautor[i].opn + "</p></div>";
-							salida += "<div class='panel-body'><h4 class='sinop' class='panel-title'>Sinopsis</h4>"
-							salida += "<p>" + miautor[i].osin + "</p></div>"
-							salida += "</div>";
+							salida += "<div class='panel-heading'><p class='panel-title'>No hay obras disponibles para este autor.</p></div>";
 						}
 
+
+
 						$("#der").append(salida);
+
 					}
 
 
 				});
 			});
-			/*
-			$("#eligeOpera").click(function(){
-				$("#der").html("");
-				$.ajax({
-					url: "miopera.php",
-					dataType: "json",
-					method: "get",
-					data : { id: $("#autores").val()	},
-					success : function(miopera){
-						var salida = "<div class='container-fluid'><table class='table'>";
-						salida += "<thead> "+
-								"<tr>" +
-								"<th>Nombre</th>" +
-								"<th>Autor</th>" +
-								"<th>Lugar de estreno</th>" +
-								"<th>Idioma</th>" +
-								"<th>Fecha de estreno</th>" +
 
-								"</thead>";
-						for(i = 0; i < miopera.length; i++){
-							salida += "<tr>";
-							salida += "<td>" +miopera[i].opera + "</td>"; // nombre
-
-							salida += "<td>" + miopera[i].autor + "</td>"; // autor
-
-							salida += "<td>" + miopera[i].lugar_estreno + "</td>";  // lugar estreno
-
-
-							if(miopera[i].idioma == "I"){					// idioma
-								salida += "<td>Italiano</td>";
-							}
-							if(miopera[i].idioma == "F"){
-								salida += "<td>Francés</td>";
-							}
-							if(miopera[i].idioma == "A"){
-								salida += "<td>Alemán</td>";
-							}
-
-							var fecha = new Date(miopera[i].fecha_estreno); 	// fecha
-							salida += "<td>" +miopera[i].fecha_estreno +"</td>";
-
-
-
-							salida += "</tr>";
-						}
-
-						salida += "</table>";
-
-						salida += "<h3>Sinopsis</h3><p>" + miopera[0].sinopsis + "</p>"
-
-						salida += "<h3>Video</h3><p>" + miopera[0].video + "</p>"
-
-
-						salida += "</div>";
-						$("#der").append(salida);
-
-					}
-				});
-			});
-			*/
 		});
 	</script>
 

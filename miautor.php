@@ -10,9 +10,11 @@ $query = "SELECT opera.nombre as opera, autor.nombre as autor, lugar_estreno, fe
 	where idopera = $_GET[id]";
 */
 
-$query2 ="SELECT o.nombre  opn, o.sinopsis osin, a.idautor, a.nombre, a.lugar_nacimiento, a.fecha_nacimiento, a.fecha_defuncion, a.lugar_defuncion
+
+
+$query2 ="SELECT o.nombre  opn, o.sinopsis osin, a.idautor, a.nombre, a.lugar_nacimiento, a.fecha_nacimiento, a.fecha_defuncion, a.lugar_defuncion, count(o.nombre) nop
 	from autor a, opera o
-	WHERE a.idautor = $_GET[id] and o.autor_idautor = $_GET[id]";
+	WHERE (a.idautor = $_GET[id] and o.autor_idautor = $_GET[id])";
 
 
 $result = $con->query($query2);
