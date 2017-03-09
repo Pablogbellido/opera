@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ópera</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script
+			  src="https://code.jquery.com/jquery-3.1.1.min.js"
+			  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			  crossorigin="anonymous">
+
+	</script>
+	<script>
+		$(function(){
+			$.ajax({
+				url : "opera.php",
+				dataType: "json",
+				method : "get",
+				success: function(operas){
+					for( i = 0; i < operas.length; i++){
+						$("#operas").append("<option value='" + operas[i].idopera + "'>"+ operas[i].nombre + "</option>");
+					}
+				}
+			});
+			$("#eligeOpera").click(function(){
+				$("#der").html("");
+				$.ajax({
+					url: "miopera.php",
+					dataType: "json",
+					method: "get",
+					data : { id: $("#operas").val()	},
+					success : function(miopera){
+						var salida = "<div class='container-fluid'><table class='table'>";
+						salida += "<thead> "+
+								"<tr>" +
+								"<th>Nombre</th>" +
+								"<th>Autor</th>" +
+								"<th>Lugar de estreno</th>" +
+								"<th>Idioma</th>" +
+								"<th>Fecha de estreno</th>" +
+
+								"</thead>";
+						for(i = 0; i < miopera.length; i++){
+							salida += "<tr>";
+							salida += "<td>" +miopera[i].opera + "</td>"; // nombre
+
+							salida += "<td>" + miopera[i].autor + "</td>"; // autor
+
+							salida += "<td>" + miopera[i].lugar_estreno + "</td>";  // lugar estreno
+
+
+							if(miopera[i].idioma == "I"){					// idioma
+								salida += "<td>Italiano</td>";
+							}
+							if(miopera[i].idioma == "F"){
+								salida += "<td>Francés</td>";
+							}
+							if(miopera[i].idioma == "A"){
+								salida += "<td>Alemán</td>";
+							}
+
+							var fecha = new Date(miopera[i].fecha_estreno); 	// fecha
+							salida += "<td>" +miopera[i].fecha_estreno +"</td>";
+
+
+
+							salida += "</tr>";
+						}
+
+						salida += "</table>";
+
+						salida += "<h3>Sinopsis</h3><p>" + miopera[0].sinopsis + "</p>"
+
+						salida += "<h3>Video</h3><p>" + miopera[0].video + "</p>"
+
+
+						salida += "</div>";
+						$("#der").append(salida);
+
+					}
+				});
+			});
+		});
+	</script>
+
+	<style>
+		#izq {
+			float: left;
+			width: 20%;
+		}
+		#der {
+			float: right;
+			width: 75%;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<ol class="breadcrumb">
+			<li><a href="index.html">Inicio</a></li>
+			<li class="active">Óperas</li>
+		</ol>
+		<h1>Óperas:</h1>
+
+		<div id="izq">
+			<div class="form-group">
+				<label for="operas">Elige el título de la ópera:</label>
+				<select id="operas" class="form-control">
+
+				</select>
+
+			</div>
+			<button id="eligeOpera" class="btn-primary form-control">Elegir</button>
+
+
+		</div>
+
+
+		<div id="der">
+
+		</div>
+	</div>
+
+
+
+
+
+
+</body>
+</html>

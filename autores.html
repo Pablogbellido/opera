@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ópera</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script
+			  src="https://code.jquery.com/jquery-3.1.1.min.js"
+			  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			  crossorigin="anonymous">
+
+	</script>
+	<script>
+		$(function(){
+			$.ajax({
+				url : "autores.php",
+				dataType: "json",
+				method : "get",
+				success: function(autores){
+					for( i = 0; i < autores.length; i++){
+						$("#autores").append("<option value='" + autores[i].idautor + "'>"+ autores[i].nombre + "</option>");
+					}
+				}
+			});
+			$("#eligeAutor").click(function () {
+				$("#der").html("");
+				$.ajax({
+					url: "miautor.php",
+					dataType: "json",
+					method: "get",
+					data : { id: $("#autores").val()	},
+					success : function (miautor) {
+						var fNac = miautor['']
+						var salida = "<div class='container-fluid'><table class='table'>";
+						salida += "<thead> "+
+								"<tr>" +
+								"<th>Nombre</th>" +
+								"<th>Lugar de nacimiento</th>" +
+								"<th>Fecha de nacimiento</th>" +
+								"<th>Fecha defunción</th>" +
+								"<th>Lugar de defunción</th>" +
+
+								"</thead>";
+
+
+						salida += "<tr>";
+						salida += "<td>" + miautor[0].nombre + "</td>"; // nombre
+						salida += "<td>" + miautor[0].fecha_nacimiento + "</td>"; // fecha nacimiento
+						salida += "<td>" + miautor[0].fecha_defuncion + "</td>"; // fecha defuncion
+						salida += "<td>" + miautor[0].lugar_defuncion + "</td>"; // lugar defuncion
+						salida += "<td>" + miautor[0].lugar_nacimiento + "</td>"; // lugar nacimiento
+						salida += "</tr></table>";
+
+						salida += "<h2>Óperas</h2>";
+						for(i = 0; i < miautor.length; i++){
+
+							salida += "<div class='panel panel-primary'>";
+							salida += "<div class='panel-heading'><p class='panel-title'>" + miautor[i].opn + "</p></div>";
+							salida += "<div class='panel-body'><h4 class='sinop' class='panel-title'>Sinopsis</h4>"
+							salida += "<p>" + miautor[i].osin + "</p></div>"
+							salida += "</div>";
+						}
+
+						$("#der").append(salida);
+					}
+
+
+				});
+			});
+			/*
+			$("#eligeOpera").click(function(){
+				$("#der").html("");
+				$.ajax({
+					url: "miopera.php",
+					dataType: "json",
+					method: "get",
+					data : { id: $("#autores").val()	},
+					success : function(miopera){
+						var salida = "<div class='container-fluid'><table class='table'>";
+						salida += "<thead> "+
+								"<tr>" +
+								"<th>Nombre</th>" +
+								"<th>Autor</th>" +
+								"<th>Lugar de estreno</th>" +
+								"<th>Idioma</th>" +
+								"<th>Fecha de estreno</th>" +
+
+								"</thead>";
+						for(i = 0; i < miopera.length; i++){
+							salida += "<tr>";
+							salida += "<td>" +miopera[i].opera + "</td>"; // nombre
+
+							salida += "<td>" + miopera[i].autor + "</td>"; // autor
+
+							salida += "<td>" + miopera[i].lugar_estreno + "</td>";  // lugar estreno
+
+
+							if(miopera[i].idioma == "I"){					// idioma
+								salida += "<td>Italiano</td>";
+							}
+							if(miopera[i].idioma == "F"){
+								salida += "<td>Francés</td>";
+							}
+							if(miopera[i].idioma == "A"){
+								salida += "<td>Alemán</td>";
+							}
+
+							var fecha = new Date(miopera[i].fecha_estreno); 	// fecha
+							salida += "<td>" +miopera[i].fecha_estreno +"</td>";
+
+
+
+							salida += "</tr>";
+						}
+
+						salida += "</table>";
+
+						salida += "<h3>Sinopsis</h3><p>" + miopera[0].sinopsis + "</p>"
+
+						salida += "<h3>Video</h3><p>" + miopera[0].video + "</p>"
+
+
+						salida += "</div>";
+						$("#der").append(salida);
+
+					}
+				});
+			});
+			*/
+		});
+	</script>
+
+	<style>
+		#izq {
+			float: left;
+			width: 25%;
+		}
+		#der {
+			float: right;
+			width: 70%;
+		}
+		.sinop{
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<ol class="breadcrumb">
+			<li><a href="index.html">Inicio</a></li>
+			<li class="active">Autores</li>
+		</ol>
+
+		<h1>Autores:</h1>
+
+		<div id="izq">
+			<div class="form-group">
+				<label for="autores">Elige el título de la ópera:</label>
+				<select id="autores" class="form-control">
+
+				</select>
+
+			</div>
+			<button id="eligeAutor" class="btn-primary form-control">Elegir</button>
+
+
+		</div>
+
+
+		<div id="der">
+
+			<!--
+			<div class="container">
+				<div class="row">
+					<ul class="list-group">
+						<li class="list-group-item"><h3>Autor</h3></li>
+					</ul>
+				</div>
+			</div>
+			-->
+		</div>
+	</div>
+
+
+
+
+
+
+</body>
+</html>
